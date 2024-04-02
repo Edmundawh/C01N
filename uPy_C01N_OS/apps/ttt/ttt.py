@@ -21,6 +21,9 @@ class TicTacToeGame:
         self.selected_row = 0
         self.selected_col = 0
         self.player_mode = player_mode
+        
+        if self.player_mode == "Robot":
+            self.current_player = 'O'  # Let the AI (O) play first
 
     def check_winner(self):
         # Check rows
@@ -86,26 +89,42 @@ class TicTacToeGame:
         oled.circle(col * CELL_SIZE + CELL_SIZE // 2, row * CELL_SIZE + CELL_SIZE // 2, CELL_SIZE // 2 - 2, COLOR_WHITE)
 
     def handle_input(self):
-        # Handle button presses for selecting boxes
-        if btn.U.value() == 0:
-            self.selected_row = (self.selected_row - 1) % GRID_SIZE
-        elif btn.D.value() == 0:
-            self.selected_row = (self.selected_row + 1) % GRID_SIZE
-        elif btn.L.value() == 0:
-            self.selected_col = (self.selected_col - 1) % GRID_SIZE
-        elif btn.R.value() == 0:
-            self.selected_col = (self.selected_col + 1) % GRID_SIZE
-        elif btn.A.value() == 0:
-            if self.grid[self.selected_row][self.selected_col] == ' ':
-                self.grid[self.selected_row][self.selected_col] = self.current_player
-                self.check_winner()
-                if not self.game_over:
-                    self.current_player = 'O' if self.current_player == 'X' else 'X'
-                    if self.player_mode == "Robot" and not self.game_over:
-                        self.make_ai_move()
-        elif btn.B.value() == 0:
-            self.selected_row = 0
-            self.selected_col = 0
+        if self.player_mode != "Robot":
+            # Handle button presses for selecting boxes
+            if btn.U.value() == 0:
+                self.selected_row = (self.selected_row - 1) % GRID_SIZE
+            elif btn.D.value() == 0:
+                self.selected_row = (self.selected_row + 1) % GRID_SIZE
+            elif btn.L.value() == 0:
+                self.selected_col = (self.selected_col - 1) % GRID_SIZE
+            elif btn.R.value() == 0:
+                self.selected_col = (self.selected_col + 1) % GRID_SIZE
+            elif btn.A.value() == 0:
+                if self.grid[self.selected_row][self.selected_col] == ' ':
+                    self.grid[self.selected_row][self.selected_col] = self.current_player
+                    self.check_winner()
+                    if not self.game_over:
+                        self.current_player = 'O' if self.current_player == 'X' else 'X'
+
+        if self.player_mode == "Robot":
+            if self.current_player == 'O':
+                self.make_ai_move()
+            else:
+                # Handle button presses for selecting boxes
+                if btn.U.value() == 0:
+                    self.selected_row = (self.selected_row - 1) % GRID_SIZE
+                elif btn.D.value() == 0:
+                    self.selected_row = (self.selected_row + 1) % GRID_SIZE
+                elif btn.L.value() == 0:
+                    self.selected_col = (self.selected_col - 1) % GRID_SIZE
+                elif btn.R.value() == 0:
+                    self.selected_col = (self.selected_col + 1) % GRID_SIZE
+                elif btn.A.value() == 0:
+                    if self.grid[self.selected_row][self.selected_col] == ' ':
+                        self.grid[self.selected_row][self.selected_col] = self.current_player
+                        self.check_winner()
+                        if not self.game_over:
+                            self.current_player = 'O' if self.current_player == 'X' else 'X'
 
     def make_ai_move(self):
         empty_cells = [(i, j) for i in range(GRID_SIZE) for j in range(GRID_SIZE) if self.grid[i][j] == ' ']
@@ -144,13 +163,20 @@ def end_game(winner):
 
 def app_start():
     player_mode = start_page()
-    game = TicTacToeGame(player_mode)
 
-    while not game.game_over:
-        game.handle_input()
-        game.draw()
-        sleep_ms(100)
-
-    end_game(game.winner)
+    if player_mode == "Robot":
+        game = TicTacToeGame(player_mode)
+        while not game.game_over:
+            game.handle_input()
+            game.draw()
+            sleep_ms(100)
+        end_game(game.winner)
+    elif player_mode == "2 Player":
+        game = TicTacToeGame(player_mode)
+        while not game.game_over:
+            game.handle_input()
+            game.draw()
+            sleep_ms(100)
+        end_game(game.winner)
 
 app_start()
