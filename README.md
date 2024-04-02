@@ -21,4 +21,4 @@ cd uPy_C01N_OS
 chmod +x flash.sh
 
  
-./flash.sh /dev/<yourC01Nlocation>
+./flash.sh /dev/ <yourC01Nlocation>
