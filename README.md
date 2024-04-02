@@ -12,7 +12,9 @@ To get a basic flashing station make sure you have these dependencies
 -> esptool (through pip3)
 
 Then get our stuff
+
 git clone https://github.com/Edmundawh/C01N/tree/main
+
 cd uPy_C01N_OS
  
 chmod +x flash.sh
