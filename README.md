@@ -16,7 +16,9 @@ Then get our stuff
 git clone https://github.com/Edmundawh/C01N/tree/main
 
 cd uPy_C01N_OS
- 
+
+ 
 chmod +x flash.sh
- 
+
+ 
 ./flash.sh /dev/<yourC01Nlocation>
