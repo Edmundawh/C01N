@@ -2,7 +2,9 @@
 C01N Project
 
 To get a basic flashing station make sure you have these dependencies
+
 -> python3
+
 -> pip3
 -> adafruit-ampy (through pip3)
 -> esptool (through pip3)
